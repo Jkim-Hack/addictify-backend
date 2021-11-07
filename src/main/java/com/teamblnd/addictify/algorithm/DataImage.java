@@ -89,6 +89,11 @@ public class DataImage
 		return negativeStreak;
 	}
 	
+	
+	public void setData(int[] data) {
+		this.data = data;
+	}
+
 	public void addData(int value)
 	{
 		int[] newArray = new int[this.data.length + 1];

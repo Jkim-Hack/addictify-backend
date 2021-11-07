@@ -15,7 +15,8 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
-import com.teamblnd.addictify.Firebase.FirebaseRead;
+import com.teamblnd.addictify.Firebase.FirebaseHandRequest;
+import com.teamblnd.addictify.Firebase.FirebaseReader;
 import com.teamblnd.addictify.service.FirebaseInitialize;
 
 public class FirebaseTest 
@@ -29,13 +30,19 @@ public class FirebaseTest
 
 		
 		
-		FirebaseRead fireBaseRead = new FirebaseRead(db, "user1");
+		FirebaseReader fireBaseRead = new FirebaseReader(db, "user1");
 	   
+		
+	    DataImage image = fireBaseRead.getDataImage("week2");
 	    
-	    Map<String, Long> map =  fireBaseRead.getCurrentWeekCount("week1");
+	    System.out.println(image.toString() + "\n");
 	    
-	    int val = map.get("Monday").intValue();
-	    System.out.println(val);
-
+	    
+	    FirebaseHandRequest handler = new FirebaseHandRequest(db, "user1");
+	    DataImage newImage = handler.readData();
+	    newImage = handler.updateData();
+	    
+	    System.out.println(newImage.toString() + "\n");
+			
 	}
 }
