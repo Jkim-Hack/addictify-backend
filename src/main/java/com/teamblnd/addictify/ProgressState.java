@@ -9,34 +9,6 @@ public class ProgressState implements TreatmentState{
 		this.dataImage = dataImage;
 	}
 
-	public void ChangeState() 
-	{
-		
-		
-	}
-	
-
-	public STATE CheckChangeState() 
-	{
-		int latestDataPoint = dataImage.getLatestDataPoint();
-		int differenceWithGoal = dataImage.getPreviousGoal() - latestDataPoint;
-		
-		
-		if(differenceWithGoal <= 0 )
-		{
-			
-		}
-		
-		return null;
-	}
-	
-	private int getNewGoal()
-	{
-		int latestDataPoint = dataImage.getLatestDataPoint();
-		int postiveStreak = dataImage.getPostiveStreak();
-		
-		return 0;
-	}
 	
 	@Override
 	public DataImage UpdateData() {
@@ -55,7 +27,7 @@ public class ProgressState implements TreatmentState{
 			positiveStreak ++;
 			if(positiveStreak % 3 == 0)
 			{
-				newGoal = dataImage.getPreviousGoal() + 1;
+				newGoal = dataImage.getPreviousGoal() - 1;
 			}
 		}
 		else

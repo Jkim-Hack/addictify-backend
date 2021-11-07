@@ -13,7 +13,7 @@ public class RecoveryState implements TreatmentState
 	public DataImage UpdateData() {
 		
 		int latestDataPoint = dataImage.getLatestDataPoint();
-		int differenceWithGoal = dataImage.getPreviousGoal() - latestDataPoint;
+		int differenceWithGoal = latestDataPoint - dataImage.getPreviousGoal();
 		
 		int positiveStreak = dataImage.getPostiveStreak();
 		int negativeStreak = dataImage.getNegativeStreak();

@@ -58,7 +58,7 @@ public class DataImage
 				min = data[i];
 			}
 		}
-		
+		System.out.println(min);
 		return min;
 		
 	}
