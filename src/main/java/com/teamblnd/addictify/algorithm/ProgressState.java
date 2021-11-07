@@ -1,4 +1,4 @@
-package com.teamblnd.addictify;
+package com.teamblnd.addictify.algorithm;
 
 public class ProgressState implements TreatmentState{
 	

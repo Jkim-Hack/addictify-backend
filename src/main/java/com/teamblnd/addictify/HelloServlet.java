@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.teamblnd.addictify.service.FirebaseInitialize;
+
 @WebServlet(name = "helloworld", value = "")
 @SuppressWarnings("serial")
 public class HelloServlet extends HttpServlet {
@@ -32,6 +34,9 @@ public class HelloServlet extends HttpServlet {
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     PrintWriter out = resp.getWriter();
     out.println("Hello, world - App Engine Flexible");
+    
+    FirebaseInitialize initialize = new FirebaseInitialize();
+    initialize.initialize();
   }
 }
 // [END gae_flex_servlet]

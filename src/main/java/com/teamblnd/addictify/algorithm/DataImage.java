@@ -1,4 +1,4 @@
-package com.teamblnd.addictify;
+package com.teamblnd.addictify.algorithm;
 
 import java.util.Arrays;
 

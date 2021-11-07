@@ -1,10 +1,10 @@
-package com.teamblnd.addictify;
+package com.teamblnd.addictify.algorithm;
 
-public class RelapseState implements TreatmentState
+public class RecoveryState implements TreatmentState 
 {
 	private DataImage dataImage;
 	
-	public RelapseState(DataImage dataImage)
+	public RecoveryState(DataImage dataImage)
 	{
 		this.dataImage = dataImage;
 	}
@@ -19,21 +19,32 @@ public class RelapseState implements TreatmentState
 		int negativeStreak = dataImage.getNegativeStreak();
 		int newGoal = dataImage.getPreviousGoal();
 		
-		STATE treatmentState = STATE.RELAPSE;
+		STATE treatmentState = STATE.RECOVERY;
 		
 		if(differenceWithGoal <= 0 )
 		{
 			positiveStreak++;
 			negativeStreak = 0;
-			treatmentState = STATE.RECOVERY;
+			if(positiveStreak % 2 == 0)
+			{
+				newGoal --;
+			}
+			if(newGoal == dataImage.getLeastGoalValue())
+			{
+				treatmentState = STATE.PROGRESS;
+				positiveStreak = 1;
+			}
+			
 		}
 		
 		else
 		{
-			if(negativeStreak <= 2)
+			positiveStreak = 0;
+			if(negativeStreak >= 4)
 			{
-				negativeStreak++;
+				negativeStreak = 0;
 				newGoal++;
+				treatmentState = STATE.RELAPSE;
 			}
 		}
 		
