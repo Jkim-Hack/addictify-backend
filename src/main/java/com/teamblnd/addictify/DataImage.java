@@ -1,122 +1,103 @@
 package com.teamblnd.addictify;
-import org.apache.commons.math3.stat.regression.RegressionResults;
-import org.apache.commons.math3.stat.regression.SimpleRegression;
 
-import com.teamblnd.regression.LinearRegression;
+import java.util.Arrays;
 
 public class DataImage 
 {
-
-	private double[][] data;
-	private RegressionResults regressionResults;
-	private boolean regressionResultsReady;
-	private float coefficient;
-	private int currentGoal;
-	private int actualVal;
+	private int[] data;
+	private int previousGoal;
+	private int postiveStreak;
+	private int negativeStreak;
+	private String previousState;
 	
-	public DataImage(double[][] data, int currentGoal, int actualVal) 
+	public DataImage(int[] data, int previousGoal, int positiveStreak, int negativeStreak, String previousState) 
 	{
 		// TODO Auto-generated constructor stub
 		this.data = data;
-		this.regressionResultsReady = false;
-		coefficient = .2f;
+		this.previousGoal = previousGoal;
+		this.postiveStreak = positiveStreak;
+		this.negativeStreak = negativeStreak;
+		this.previousState = previousState;
+		
 	}
 	
-	/*
-	 * requires: regressionResultsReady == TRUE
-	 * 
-	 * ensures: 
-	 * 		getParameters is a double array s.t.
-	 * 			0th Index - Intercept
-	 * 			1st Index - Slope
-	 */
-	public double[] getParameters()
+	public int getLatestDataPoint()
 	{
-		double slope = regressionResults.getParameterEstimate(1);
-		double intercept = regressionResults.getParameterEstimate(0);
-		
-		double[] parameters = {intercept, slope};
-		
-		return parameters;
+		return data[data.length - 1];
 	}
 	
-	public int getNewGoal()
+	public STATE getState()
 	{
-		double[] parameters = getParameters();
-		int newGoal;
+		STATE state;
+		String stateAsString = previousState.toUpperCase();
 		
-		double slope = parameters[1];
-		
-		int goalDifference = currentGoal - actualVal;
-		
-		if( -.2 < slope && slope < .2 )
+		if(stateAsString.equals("PROGRESS"))
 		{
-			
-			if(goalDifference ==  0)
-			{
-				newGoal = currentGoal - 1;
-			}
-			else if(goalDifference > 0)
-			{
-				newGoal = (int)( currentGoal - (goalDifference * coefficient));
-			}
-			else
-			{
-				newGoal = (int)( (goalDifference * coefficient) + currentGoal);
-			}
+			state = STATE.PROGRESS;
 		}
-		else if( slope < -.2)
+		else if(stateAsString.equals("RECOVERY"))
 		{
-			if(goalDifference ==  0)
-			{
-				newGoal = currentGoal - 1;
-			}
-			else if(goalDifference > 0)
-			{
-				newGoal = (int)( currentGoal - (goalDifference * Math.abs(slope)));
-			}
-			else
-			{
-				newGoal = (int)( currentGoal + (goalDifference/2));
-			}
+			state = STATE.RECOVERY;
 		}
 		else
 		{
-			if(goalDifference == 0)
+			state = STATE.RELAPSE;
+		}
+		
+		return state;
+	}
+
+	public int getLeastGoalValue()
+	{
+		int min = data[0];
+		
+		for(int i = 1; i < data.length; i++)
+		{
+			if(data[i] < min)
 			{
-				newGoal = currentGoal;
-			}
-			else if(goalDifference > 0)
-			{
-				newGoal = currentGoal - 1;
-			}
-			else
-			{
-				newGoal = currentGoal;
+				min = data[i];
 			}
 		}
 		
-		return newGoal;
-		
+		return min;
 		
 	}
-
 	
-	/*
-	 * Runs the regression on the Data
-	 * 
-	 * ensures: regressionResultsReady
-	 * 
-	 */
-	public void runRegression()
+	@Override
+	public String toString() {
+		return "DataImage [data=" + Arrays.toString(data) + ", previousGoal=" + previousGoal + ", postiveStreak="
+				+ postiveStreak + ", negativeStreak=" + negativeStreak + ", previousState=" + previousState + "]";
+	}
+
+	public int[] getData() 
 	{
-		this.regressionResults = LinearRegression.generateLeaseSquareLine(this.data);
-		this.regressionResultsReady = true;
+		return data;
+	}
+
+	public int getPreviousGoal() 
+	{
+		return previousGoal;
+	}
+
+	public int getPostiveStreak() 
+	{
+		return postiveStreak;
+	}
+
+	public int getNegativeStreak() 
+	{
+		return negativeStreak;
 	}
 	
-
-	
-	
-	
+	public void addData(int value)
+	{
+		int[] newArray = new int[this.data.length + 1];
+		for(int i = 0; i < this.data.length; i++)
+		{
+			newArray[i] = data[i];
+		}
+		newArray[this.data.length] = value;
+		this.data = newArray;
+	}
 	
 }
